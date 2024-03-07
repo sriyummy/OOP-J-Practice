@@ -1,39 +1,58 @@
-/*Write a program in Java having three classes Apple, Banana and Cherry. Class Banana and Cherry
-are inherited from class Apple and each class have their own member function show().
-Using Dynamic Method Dispatch concept display all the show() method of each class.*/
+/*Write a Java class which has a method called ProcessInput().
+This method checks the number entered by the user. If the entered
+number is negative then throw an user defined exception called
+NegativeNumberException, otherwise it displays the double value
+of the entered number.*/
 
-class Apple
+import java.util.Scanner;
+
+class Except extends Exception
 {
-	public void show()
+    int num;
+    String mssg;
+
+    Except(String mssg, int num)
 	{
-		System.out.println ("This is an Apple!");
-	}
+        this.num = num;
+        this.mssg = mssg;
+    }
+
+    public String toString()
+	{
+        return "myException caught: " + mssg + " with value: " + num;
+    }
 }
 
-class Banana extends Apple
+class Main3
 {
-	public void show()
+    static void ProcessInput(int x) throws Except
 	{
-		System.out.println ("This is a Banana!");
-	}
-}
+        if (x < 0)
+		{
+            throw new Except("NegativeNumberException", x);
+        }
+		else
+		{
+            System.out.println("Positive Number!");
+        }
+    }
 
-class Cherry extends Apple
-{
-	public void show()
+    public static void main(String[] args)
 	{
-		System.out.println ("This is a Cherry!");
-	}
-}
+        Scanner sc = new Scanner(System.in);
+        int n;
 
-public class Main3
-{
-	public static void main(String[] aargs)
-	{
-		Apple ap1 = new Cherry();
-		Apple ap2 = new Banana();
-		
-		ap1.show();
-		ap2.show();
-	}
+        System.out.println("Enter a number to check if positive or negative: ");
+        n = sc.nextInt();
+
+        try
+		{
+            ProcessInput(n);
+        }
+		catch (Except e)
+		{
+            System.out.println(e);
+        }
+        sc.close();
+    }
 }
