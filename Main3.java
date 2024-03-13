@@ -1,58 +1,59 @@
-/*Write a Java class which has a method called ProcessInput().
-This method checks the number entered by the user. If the entered
-number is negative then throw an user defined exception called
-NegativeNumberException, otherwise it displays the double value
-of the entered number.*/
-
 import java.util.Scanner;
 
-class Except extends Exception
+interface Salary
 {
-    int num;
-    String mssg;
-
-    Except(String mssg, int num)
-	{
-        this.num = num;
-        this.mssg = mssg;
-    }
-
-    public String toString()
-	{
-        return "myException caught: " + mssg + " with value: " + num;
-    }
+  float earnings(float basic);
+  float deductions(float basic);
+  float bonus(float basic);
 }
 
-class Main3
+abstract class Manager implements Salary
 {
-    static void ProcessInput(int x) throws Except
-	{
-        if (x < 0)
-		{
-            throw new Except("NegativeNumberException", x);
-        }
-		else
-		{
-            System.out.println("Positive Number!");
-        }
-    }
+  @Override
+  public float earnings(float basic)
+  {
+	return (basic+(0.8f*basic)+(0.15f*basic));
+  }
 
-    public static void main(String[] args)
-	{
-        Scanner sc = new Scanner(System.in);
-        int n;
+  @Override
+  public float deductions(float basic)
+  {
+    
+	return 0.12f*basic;
+  }
+  
+  public abstract float bonus(float basic);
+}
 
-        System.out.println("Enter a number to check if positive or negative: ");
-        n = sc.nextInt();
+class Substaff extends Manager
+{
+  @Override
+  public float bonus(float basic)
+  {
+    return 0.5f*basic;
+  }
+}
 
-        try
-		{
-            ProcessInput(n);
-        }
-		catch (Except e)
-		{
-            System.out.println(e);
-        }
-        sc.close();
-    }
+public class Main3
+{
+  public static void main(String[] args)
+  {
+    Scanner sc = new Scanner(System.in);
+
+    System.out.print("Enter basic salary: ");
+    float basicSalary = sc.nextFloat();
+
+    Substaff staff = new Substaff();
+
+    float earnings = staff.earnings(basicSalary);
+    float deductions = staff.deductions(basicSalary);
+    float bonus = staff.bonus(basicSalary);
+
+    System.out.println("Earnings: Rs" + earnings);
+    System.out.println("Deductions: Rs" + deductions);
+    System.out.println("Bonus: Rs" + bonus);
+    System.out.println("Net Salary:Rs" + (earnings - deductions + bonus));
+
+    sc.close();
+  }
 }

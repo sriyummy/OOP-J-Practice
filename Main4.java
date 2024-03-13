@@ -1,83 +1,91 @@
-/*Write a program to create user defined exceptions called HrsException, MinException
-and SecException. Create a class Time which contains data members hours, minutes,
-seconds and a method to take a time from user which throws the user defined exceptions
-if hours (>24 &<0),minutes(>60 &<0),seconds(>60 &<0)*/
+/*Define an interface Emploee with a method getDetails() to get emplyee details
+as Empid and Ename. Also define a derived interface Manager with a method
+getDeptDetails() to get department details such as Deptid and Deptname. Then
+define a class Head which implements Manager interface and also prints all
+details of the employee. Write the complete program to display all details of
+one head of the department.*/
 
 import java.util.Scanner;
 
-class HrsException extends Exception
+interface Employee
 {
-	public HrsException(String message)
-	{
-		super (message);
-	}
+    void getDetails(int emp_id, String e_name);
 }
 
-class MinException extends Exception
+interface Manager extends Employee
 {
-	public MinException(String message)
-	{
-		super (message);
-	}
+    void getDeptDetails(int dept_id, String dept_name);
 }
 
-class SecException extends Exception
+class Head implements Manager
 {
-	public SecException(String message)
-	{
-		super (message);
-	}
-}
+    Scanner sc = new Scanner(System.in);
+    private int emp_id;
+    private String e_name;
+    private int dept_id;
+    private String dept_name;
 
-class Time
-{
-	private int hrs, mins, secs;
-	
-	public void setTime() throws HrsException, MinException, SecException
+    @Override
+    public void getDetails(int emp_id, String e_name)
 	{
-		Scanner sc = new Scanner (System.in);
-		
-		System.out.println ("Enter the number of hours, followed by the number of minutes and then the number of seconds: ");
-		hrs = sc.nextInt();
-		mins = sc.nextInt();
-		secs = sc.nextInt();
-		
-		if (hrs < 0 || hrs >= 24)
-		{
-			throw new HrsException ("No. of hours should be between 0 and 24");
-		}
-		
-		if (mins >= 60 || mins < 0)
-		{
-			throw new MinException ("No. of minutes should be between 0 and 60");
-		}
-		
-		if (secs >= 60 || secs < 0)
-		{
-			throw new SecException ("No. of seconds should range between 0 and 60");
-		}
-	}
-	
-	public void displayTime()
+        System.out.println("Enter employee ID: ");
+        this.emp_id = sc.nextInt();
+        sc.nextLine();
+        System.out.println("Enter employee name: ");
+        this.e_name = sc.nextLine();
+    }
+
+    @Override
+    public void getDeptDetails(int dept_id, String dept_name)
 	{
-		System.out.println ("The entered time is: " + hrs + ":" + mins + ":" + secs);
-	}
+        System.out.println("Enter department ID: ");
+        this.dept_id = sc.nextInt();
+        sc.nextLine();
+        System.out.println("Enter department name: ");
+        this.dept_name = sc.nextLine();
+    }
+
+    public void closeScanner()
+	{
+        sc.close();
+    }
+
+    public int getEmpId()
+	{
+        return emp_id;
+    }
+
+    public String getEmpName()
+	{
+        return e_name;
+    }
+
+    public int getDeptId()
+	{
+        return dept_id;
+    }
+
+    public String getDeptName()
+	{
+        return dept_name;
+    }
 }
 
 public class Main4
 {
-	public static void main (String args[])
+    public static void main(String args[])
 	{
-		Time t1 = new Time();
+        Head h1 = new Head();
+
+        h1.getDetails(0, "");
+		h1.getDeptDetails(0, "");
 		
-		try
-		{
-			t1.setTime();
-			t1.displayTime();
-		}
-		catch (HrsException | MinException | SecException e)
-		{
-			System.out.println ("Please enter corrrect time format: " + e.getMessage());
-		}
-	}
+        System.out.println("Details of head of department: ");
+        System.out.println("Employee Name: " + h1.getEmpName());
+        System.out.println("Employee ID: " + h1.getEmpId());
+        System.out.println("Department Name: " + h1.getDeptName());
+        System.out.println("Department ID: " + h1.getDeptId());
+
+        h1.closeScanner();
+    }
 }
